@@ -1,0 +1,59 @@
+<%include ./partials/header%>
+
+<%var arr=[];%>
+<div class="container" >
+    <!-- <div style="width: 100%">
+        <input type="text" id="filterInput" placeholder="Search names...">
+    </div> -->
+
+	<div class="row">    
+        
+		<% Products.forEach(function(product){ %>
+    <div class="col-sm-12 col-md-3 col-lg-3">
+        <div class="img-thumbnail">
+            <img src="<%=product.imagepath%>" alt="..." class="img-responsive">
+            <div class="caption">
+                <h3 align="center"><%=product.title%></h3>
+                <p class="description"><%=product.description%></p>
+                <div class="clearfix">
+                    <div class="price"><%=product.Price%></div>
+                    <a href="/add-to-cart/<%=product._id%>" class="btn btn-success"  role="button">Buy</a>
+                    <a href="/remove-from-cart/<%=product._id%>" class="btn btn-danger" role="button">Remove</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% });  %>
+	</div>
+</div>
+
+<script>
+    // Get input element
+    let filterInput = document.getElementById('filterInput');
+    // Add event listener
+    filterInput.addEventListener('keyup', filterNames);
+
+    function filterNames(){
+      // Get value of input
+      // let filterValue = document.getElementById('filterInput').value.toUpperCase();
+
+      // // Get names ul
+      // let ul = document.getElementById('names');
+      // // Get lis from ul
+      // let li = ul.querySelectorAll('li.collection-item');
+
+      // Loop through collection-item lis
+      console.log(filterInput.value.toUpperCase());
+      for(let i = 0;i < Products.length;i++){
+        // If matched
+        if(Products.title.toUpperCase().indexOf(filterValue) > -1){
+            Products[i].style.display = '';
+        }
+        else
+        {
+            Products.style.display= none;
+        }
+    }
+  </script>
+
+<%include partials/footer%>
