@@ -16,7 +16,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.7.5",
     "nexmo": "^2.4.1",
     "nodemon": "^1.19.1",
     "npm": "^6.9.0",
