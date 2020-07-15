@@ -34,7 +34,7 @@ app.use(bodyparser.json());
 app.use(express.static("public"));
 app.use(express.static("images"));
 app.use(bodyparser.urlencoded({extended:true}));
-mongoose.connect("mongodb://localhost/ShopCart");
+mongoose.connect("mongodb://localhost/SwissTime");
 
 app.use(require("express-session")({
 	secret:"Rusty is the best dog",
@@ -57,11 +57,6 @@ app.use(function(req,res,next){
 	res.locals.session=req.session;
 	next();
 });
-
-
-
-//app.use(express.static(__dirname + '/public'));
-////app.use(express.static("public"));
 
 
 app.get("/",function(req,res){
@@ -246,12 +241,13 @@ app.get('/success', (req, res) => {
 app.get('/cancel', (req, res) => res.send('Cancelled'));
 
 app.post("/login",passport.authenticate("local",
-	{
-		successRedirect:"/home",
-		failureRedirect:"/login"
-	}),function(req,res){
-
+  {
+    successRedirect:"/home",
+    failureRedirect:"/login"
+  }),function(req,res){
 });
+
+
 
 app.get("/signup",function(req,res){
 	res.render("signup");
@@ -268,13 +264,14 @@ function isLoggedIn(req,res,next){
 app.post("/signup",function(req,res){
     var newuser=new User({username:req.body.username});
    User.register(newuser,req.body.password,function(err,user){
+
        if(err)
        {
            console.log(err);
            return res.render("signup");
        }
        passport.authenticate("local")(req,res,function(){
-           res.redirect("/");
+           res.redirect("/home");
        });
    });
 });
