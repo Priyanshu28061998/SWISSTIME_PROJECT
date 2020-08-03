@@ -21,11 +21,6 @@ paypal.configure({
   'client_secret': 'EI1YnhW5yfTuJrBTDOg78qz263HLXcGWcqEbx0YTGLx90UPrmq8425UuLYRACM9PzuNlKBVmc48zDXNn'
 });
 
-const nexmo = new Nexmo({
-  apiKey: "1285b85f",
-  apiSecret: "Glu9wFvXIGLcktCm"
-}, { debug: true });
-
 var cost=0;
 
 app.set("view engine","ejs");
@@ -50,7 +45,7 @@ app.use(passport.session());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//seedDB();
+seedDB();
 
 app.use(function(req,res,next){
 	res.locals.currentUser=req.user;
@@ -78,33 +73,6 @@ app.get("/home",isLoggedIn,function(req,res){
   })
 });
 
-app.post('/send', (req, res) => {
-  // res.send(req.body);
-  // console.log(req.body);
-  const { number, text } = req.body;
-  console.log(req.body);
-  nexmo.message.sendSms(
-    '919953270799', number, text, { type: 'unicode' },
-    (err, responseData) => {
-      if(err) {
-        console.log(err);
-      } else {
-        const { messages } = responseData;
-        const { ['message-id']: id, ['to']: number, ['error-text']: error  } = messages[0];
-        console.dir(responseData);
-        // Get data from response
-        const data = {
-          id,
-          number,
-          error
-        };
-
-        // Emit to the client
-        io.emit('smsStatus', data);
-      }
-    }
-  );
-});
 
 app.get("/add-to-cart/:id",function(req,res,next){
 	var productId=req.params.id;
@@ -267,8 +235,8 @@ app.post("/signup",function(req,res){
 
        if(err)
        {
-           console.log(err);
-           return res.render("signup");
+            res.render("userExist");
+            res.redirect("/signup");
        }
        passport.authenticate("local")(req,res,function(){
            res.redirect("/home");
@@ -280,11 +248,3 @@ app.post("/signup",function(req,res){
 const port=2806;
 const server = app.listen(port, () => console.log(`Server started on port ${port}`));
 
-
-const io = socketio(server);
-io.on('connection', (socket) => {
-  console.log('Connected');
-  io.on('disconnect', () => {
-    console.log('Disconnected');
-  })
-});
